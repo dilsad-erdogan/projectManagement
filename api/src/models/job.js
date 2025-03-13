@@ -9,9 +9,8 @@ const jobSchema = new mongoose.Schema({
     max_price: { type: Number, required: true },
     duration: { type: String, required: true },
     starting_state: { type: Boolean, default: false },
-    completion_state: { type: Boolean, required: true },
-    difficulty_state: { type: Boolean, required: true },
-    auction_state: { type: Boolean, required: true },
+    completion_state: { type: Boolean, default: false },
+    difficulty_state: { type: Boolean, default: true },
     date_time: { type: Date, default: Date.now },
     is_active: { type: Boolean, default: true }
 });
