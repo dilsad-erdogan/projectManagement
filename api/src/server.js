@@ -18,7 +18,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static('public'));
 app.use(morgan('dev'));
 
-//app.use('/categorie', require('./routers/categorie'));
+app.use('/agreement', require('./routes/agreement'));
+app.use('/auction', require('./routes/auction'));
+app.use('/jobs', require('./routes/jobs'));
+app.use('/period', require('./routes/period'));
+app.use('/role', require('./routes/role'));
+app.use('/user', require('./routes/user'));
 
 app.get('/', (req, res) => {
     res.setHeader("Access-Control-Allow-Credentials", "true");
