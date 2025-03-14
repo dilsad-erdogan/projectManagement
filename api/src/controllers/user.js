@@ -19,9 +19,9 @@ async function login (req, res) {
 };
 
 async function register (req, res) {
-    const { role, name, surname, email, phone, password } = req.body;
+    const { role_id, name, surname, email, phone, password } = req.body;
 
-    if (!role || !name || !surname || !email || !phone || !password) {
+    if (!role_id || !name || !surname || !email || !phone || !password) {
         return res.status(400).json({ success: false, error: 'All fields are required!' });
     }
 
@@ -30,7 +30,7 @@ async function register (req, res) {
         return res.status(400).json({ success: false, error: 'This email is already taken. Try again please!' });
     }
 
-    await User.create({ role, name, surname, email, phone, adjective: "", features: [], password, is_active: true });
+    await User.create({ role_id, name, surname, email, phone, adjective: "", features: [], password, is_active: true });
     res.status(200).json({ success: true, message: 'Account created successfully!'});
 };
 

@@ -20,7 +20,7 @@ app.use(morgan('dev'));
 
 app.use('/agreement', require('./routes/agreement'));
 app.use('/auction', require('./routes/auction'));
-app.use('/jobs', require('./routes/jobs'));
+app.use('/job', require('./routes/job'));
 app.use('/period', require('./routes/period'));
 app.use('/role', require('./routes/role'));
 app.use('/user', require('./routes/user'));

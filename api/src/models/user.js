@@ -7,7 +7,7 @@ const userSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
     phone: { type: String, required: true },
     working_state: { type: Boolean, default: false },
-    adjective: { type: String, required: true },
+    adjective: { type: String, required: false },
     features: [
         {
             feature: { type: String, required: true },

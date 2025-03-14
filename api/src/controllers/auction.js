@@ -2,12 +2,13 @@ const Auction = require("../models/auction");
 
 async function setAuction (req, res) {
     try{
-        const { job_id, developer_id, price, approval_state } = req.body;
+        const { job_id, developer_id, price } = req.body;
 
         const auction = new Auction({
-            name: name,
-            description: description,
-            image: image,
+            job_id: job_id,
+            developer_id: developer_id,
+            price: price,
+            approval_state: false,
             date_time: Date.now(),
             is_active: true
         });
