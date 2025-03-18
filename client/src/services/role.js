@@ -31,5 +31,5 @@ const byId = async (id) => {
     }
 };
 
-const auctionServices = { add, get, byId };
-export default auctionServices;
+const roleServices = { add, get, byId };
+export default roleServices;

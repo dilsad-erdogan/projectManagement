@@ -81,5 +81,5 @@ const updateApprovalState = async (id, data) => {
     }
 };
 
-const auctionServices = { add, get, byId, deleted, updateContract, updateRevised, updateRevisedState, updateApprovalState };
-export default auctionServices;
+const periodServices = { add, get, byId, deleted, updateContract, updateRevised, updateRevisedState, updateApprovalState };
+export default periodServices;
