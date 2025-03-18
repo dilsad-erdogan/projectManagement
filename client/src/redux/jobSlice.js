@@ -15,7 +15,7 @@ const jobSlice = createSlice({
         },
         setSearchTerm(state, action) {
             state.searchTerm = action.payload
-            state.filteredData = state.jobs.filter(job => job.name.toLowerCase().includes(state.searchTerm.toLowerCase()))
+            state.filteredData = state.jobs.filter(job => job.title.toLowerCase().includes(state.searchTerm.toLowerCase()))
         }
     },
 });
