@@ -110,6 +110,7 @@ export default function Home() {
 
           <Routes>
             <Route path='/' element={<Main />} />
+            <Route path='/profile' element={<Main />} />
           </Routes>
         </div>
       </Router>
