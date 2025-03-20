@@ -4,7 +4,6 @@ import JobCard from "../components/JobCard";
 
 const Main = () => {
   const jobs = useSelector(state => state.job.jobs);
-  console.log(jobs);
 
   return (
     <div className='flex-1 justify-center items-center mt-16'>
