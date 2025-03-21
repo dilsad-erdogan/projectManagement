@@ -18,6 +18,7 @@ import { setUsers } from "../redux/userSlice";
 import Navbar from "../components/Navbar";
 import Main from "../pages/Main";
 import Job from "../pages/Job";
+import Profile from "../pages/Profile";
 import { useEffect, useState } from 'react';
 
 export default function Home() {
@@ -111,7 +112,7 @@ export default function Home() {
 
           <Routes>
             <Route path='/' element={<Main />} />
-            <Route path='/profile' element={<Main />} />
+            <Route path="/profile/:roleName/:userId" element={<Profile />} />
             <Route path='/job/:id' element={<Job />} />
           </Routes>
         </div>

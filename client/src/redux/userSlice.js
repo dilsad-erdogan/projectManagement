@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     users: [],
+    selectUser: [],
     searchResults: [],
 };
 
@@ -21,11 +22,11 @@ const usersSlice = createSlice({
         login: (state, action) => {
             localStorage.clear();
             localStorage.setItem('user', JSON.stringify(action.payload));
-            state.users = action.payload
+            state.selectUser = action.payload
         },
         logout: (state) => {
             localStorage.removeItem('user');
-            state.users = false
+            state.selectUser = false
         }
     },
 });

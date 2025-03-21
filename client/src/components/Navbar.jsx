@@ -67,6 +67,18 @@ const Navbar = () => {
     }
   };
 
+  const handleProfileRedirect = () => {
+    if (user && roles.length > 0) {
+      const userRole = roles.find(role => role._id === user.user.role_id);
+      if (userRole) {
+        const profilePath = `/profile/${userRole.name}/${user.user._id}`;
+        navigate(profilePath);
+      } else {
+        console.error("User role not found");
+      }
+    }
+  };  
+
   return (
     <nav className="w-full">
       {/* Desktop Navbar */}
@@ -80,7 +92,7 @@ const Navbar = () => {
             </form>
           </div>
         </div>
-        <div className="flex flex-row items-center gap-5 m-5 text-2xl cursor-pointer" onClick={user ? () => navigate('/profile') : handleLogin}>
+        <div className="flex flex-row items-center gap-5 m-5 text-2xl cursor-pointer" onClick={user ? handleProfileRedirect : handleLogin}>
           <FaUserCircle className='font-bold text-xl' />
           <p className='font-bold text-xl'>{user ? (user.user.name) + " " + (user.user.surname) : 'Login'}</p>
         </div>
