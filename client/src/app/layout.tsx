@@ -4,6 +4,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Provider } from "react-redux";
 import store from "../redux/store";
+import Navbar from "@/components/Navbar";
+import { Toaster } from "react-hot-toast";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,17 +17,17 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <Provider store={store}>{children}</Provider>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <Provider store={store}>
+          <div className="h-screen flex flex-col">
+            <Navbar />
+            <Toaster position="top-right" />
+            <main className="flex-1">{children}</main>
+          </div>
+        </Provider>
       </body>
     </html>
   );

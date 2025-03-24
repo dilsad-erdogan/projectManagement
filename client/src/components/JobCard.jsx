@@ -1,15 +1,17 @@
+"use client";
+
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import { FaCheck, FaTimes } from "react-icons/fa";
 import { useSelector } from 'react-redux';
+import { useRouter } from 'next/navigation'; 
 
 const JobCard = ({ job }) => {
-    const navigate = useNavigate();
+    const router = useRouter();
     const users = useSelector(state => state.user.users);
     const customer = users.find(user => user._id === job.customer_id);
 
     return (
-        <div className='p-1 m-1' onClick={() => navigate(`/job/${job._id}`)}>
+        <div className='p-1 m-1' onClick={() => router.push(`/job/${job._id}`)}>
             <div className='flex flex-row justify-between'>
                 <div className='flex flex-col gap-2'>
                     <h2 className='text-xl font-bold'>{job.title}</h2>

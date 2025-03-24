@@ -1,10 +1,11 @@
 "use client";
 
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useParams } from "next/navigation";
 
 const Profile = () => {
-  const { roleName, userId } = useParams();
+  const params = useParams();
+  const { roleName, userId } = params;
 
   return (
     <div>

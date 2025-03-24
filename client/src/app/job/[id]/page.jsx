@@ -1,31 +1,46 @@
-import { useSelector, useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
+"use client";
+
+import { useSelector } from 'react-redux';
+import { useParams, useRouter } from 'next/navigation';
 import { FaCheck, FaTimes } from "react-icons/fa";
-import { useState } from 'react';
-import auctionServices from '../services/auction';
+import { useState, useEffect } from 'react';
+import auctionServices from '../../../services/auction';
 
 const Job = () => {
   const { id } = useParams();
+  const router = useRouter();
   const jobs = useSelector(state => state.job.jobs);
-  const job = jobs.find(data => data._id === id);
   const users = useSelector(state => state.user.users);
-  const customer = users.find(user => user._id === job.customer_id);
   const auctions = useSelector(state => state.auction.auctions);
-  const jobAuctions = auctions.filter(auction => auction.job_id === id);
   const [price, setPrice] = useState('');
+
+  // Job ve ilgili verileri bul
+  const job = jobs.find(data => data._id === id);
+  const customer = job ? users.find(user => user._id === job.customer_id) : null;
+  const jobAuctions = auctions.filter(auction => auction.job_id === id);
+
+  useEffect(() => {
+    if (!job) {
+      console.error('Job not found!');
+    }
+  }, [job]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!price) return alert('Please enter a price');
     try {
       const newAuction = { job_id: id, developer_id: "67d35eebb05eacaecf05d407", price: parseInt(price) };
       await auctionServices.add(newAuction);
       alert('Offer submitted successfully!');
       setPrice('');
-      window.location.reload(); // Refresh to show updated offers
+      router.refresh();  // Sayfayı yenile
     } catch (error) {
       alert('Failed to submit offer. Please try again.');
+      console.error(error);
     }
   };
+
+  if (!job) return <div className="text-center p-4">Job not found</div>;
 
   return (
     <div className='flex flex-row justify-between p-4 gap-6'>
@@ -46,7 +61,16 @@ const Job = () => {
       <div className='w-1/3 bg-white p-4 rounded-xl shadow-lg flex flex-col items-center'>
         <h3 className='text-xl font-bold mb-4'>Submit Your Offer</h3>
         <form onSubmit={handleSubmit} className='flex flex-col gap-4 w-full'>
-          <input type='number' value={price} onChange={(e) => setPrice(e.target.value)} placeholder={`Offer between $${job.min_price} - $${job.max_price}`} className='border p-2 rounded-lg w-full' min={job.min_price} max={job.max_price} required />
+          <input 
+            type='number' 
+            value={price} 
+            onChange={(e) => setPrice(e.target.value)} 
+            placeholder={`Offer between $${job.min_price} - $${job.max_price}`} 
+            className='border p-2 rounded-lg w-full' 
+            min={job.min_price} 
+            max={job.max_price} 
+            required 
+          />
           <button type='submit' className='bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition'>
             Submit Offer
           </button>

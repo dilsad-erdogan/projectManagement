@@ -1,5 +1,6 @@
+"use client";
+import { useRouter } from "next/navigation";
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { FaSearch, FaUserCircle } from "react-icons/fa";
 import { setSearchTerm } from '@/redux/jobSlice';
 import { login as loginAction } from '@/redux/userSlice';
@@ -8,7 +9,7 @@ import userServices from '@/services/user';
 const { login, register } = userServices;
 
 const Navbar = () => {
-  const navigate = useNavigate();
+  const router = useRouter();
   const dispatch = useDispatch();
   const roles = useSelector(state => state.role.roles);
   const [search, setSearch] = useState('');
@@ -71,8 +72,7 @@ const Navbar = () => {
     if (user && roles.length > 0) {
       const userRole = roles.find(role => role._id === user.user.role_id);
       if (userRole) {
-        const profilePath = `/profile/${userRole.name}/${user.user._id}`;
-        navigate(profilePath);
+        router.push(`/profile/${userRole.name}/${user.user._id}`);
       } else {
         console.error("User role not found");
       }
@@ -83,7 +83,7 @@ const Navbar = () => {
     <nav className="w-full">
       {/* Desktop Navbar */}
       <div className="hidden lg:flex w-full pt-8 justify-between items-center">
-        <div className="text-3xl font-bold cursor-pointer" style={{ fontFamily: "'Lucida Handwriting', cursive" }} onClick={() => navigate('/')}>Project Management</div>
+        <div className="text-3xl font-bold cursor-pointer" style={{ fontFamily: "'Lucida Handwriting', cursive" }} onClick={() => router.push('/')}>Project Management</div>
         <div className="ml-4">
           <div className="relative bg-gray-200 rounded-2xl px-2 flex-1 mx-4">
             <form onSubmit={handleSearch}>
