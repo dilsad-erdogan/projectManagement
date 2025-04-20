@@ -28,17 +28,32 @@ const Job = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!price) return alert('Please enter a price');
+  
     try {
-      const newAuction = { job_id: id, developer_id: "67d35eebb05eacaecf05d407", price: parseInt(price) };
+      // localStorage'dan kullanıcıyı al
+      const storedUser = JSON.parse(localStorage.getItem('user'));
+      const developerId = storedUser?._id;
+  
+      if (!developerId) {
+        alert('User not found. Please log in again.');
+        return;
+      }
+  
+      const newAuction = { 
+        job_id: id, 
+        developer_id: developerId, 
+        price: parseInt(price) 
+      };
+  
       await auctionServices.add(newAuction);
       alert('Offer submitted successfully!');
       setPrice('');
-      router.refresh();  // Sayfayı yenile
+      router.refresh(); // Sayfayı yenile
     } catch (error) {
       alert('Failed to submit offer. Please try again.');
       console.error(error);
     }
-  };
+  };  
 
   if (!job) return <div className="text-center p-4">Job not found</div>;
 
