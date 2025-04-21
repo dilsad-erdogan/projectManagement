@@ -32,7 +32,7 @@ const Sidebar = ({ roleName, userId }) => {
 
             <div className="flex gap-2 items-center text-white bg-blue-500 hover:bg-blue-800 font-medium rounded-full w-full text-sm p-2 mt-4 px-5 me-2" onClick={handleLogout}>
                 <FiLogOut className="text-2xl font-bold" />
-                <div className="text-2xl">Logout</div>
+                <div className="text-xl">Logout</div>
             </div>
         </div>
     )
