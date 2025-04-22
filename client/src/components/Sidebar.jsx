@@ -1,5 +1,5 @@
 import React from 'react';
-import { MdOutlineDashboard, MdDeveloperMode  } from "react-icons/md";
+import { MdDeveloperMode  } from "react-icons/md";
 import { FaUserAlt } from "react-icons/fa";
 import { FiLogOut } from "react-icons/fi";
 import { useRouter } from 'next/navigation';
@@ -18,11 +18,6 @@ const Sidebar = ({ roleName, userId }) => {
             <div className="flex items-center gap-5" onClick={() => router.push(`/profile/${roleName}/${userId}`)}>
                 <FaUserAlt className="text-2xl font-bold" />
                 <div className="text-2xl">Profile</div>
-            </div>
-
-            <div className="flex items-center gap-5" onClick={() => router.push(`/features/${roleName}/${userId}`)}>
-                <MdOutlineDashboard className="text-2xl font-bold" />
-                <div className="text-2xl">Features</div>
             </div>
 
             <div className="flex items-center gap-5" onClick={() => router.push(`/jobs/${roleName}/${userId}`)}>
