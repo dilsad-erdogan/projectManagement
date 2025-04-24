@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 const Developer = ({ userId }) => {
-  console.log("userId:", userId);
   // Auctions
   const auctions = useSelector(state => state.auction.auctions);
   const myAuctions = auctions.filter(auction => auction.developer_id === userId);
@@ -21,20 +20,10 @@ const Developer = ({ userId }) => {
   const myJobsFromAgreements = jobs.filter(job => myJobIdsFromAgreements.includes(job._id));
 
   useEffect(() => {
-    console.log("userId:", userId);
-    console.log("Auctions from store:", auctions);
-    console.log("Periods from store:", periods);
-    console.log("Agreements from store:", agreements);
     console.log("myAuctions:", myAuctions);
     console.log("myPeriods:", myPeriods);
-    console.log("myAgreements:", myAgreements);
     console.log("myJobsFromAgreements:", myJobsFromAgreements);
-  }, [auctions, jobs, agreements, userId]);
-
-  myAuctions.filter(auction => {
-    console.log("auction.developer_id:", auction.developer_id, "userId:", userId);
-    return auction.developer_id === userId;
-  });
+  }, [auctions, jobs, agreements]);
 
   return (
     <div className="flex justify-center mt-10">
