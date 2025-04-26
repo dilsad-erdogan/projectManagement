@@ -84,6 +84,7 @@ async function updateApproval (req, res) {
         }
 
         auction.approval_state = approval_state;
+        auction.updateOne({ is_active: false });
         auction.save();
 
         res.status(200).json({ success: true, message: 'Auction updated successfully' });
