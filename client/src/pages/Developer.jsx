@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/navigation'; 
 
-const Developer = ({ userId }) => {
+const Developer = ({ roleName, userId }) => {
   const router = useRouter();
 
   // Auctions
@@ -29,7 +29,7 @@ const Developer = ({ userId }) => {
         <h2 className='text-2xl font-bold mb-4'>Auctions I attended</h2>
         {myAuctions.length > 0 ? (
           myAuctions.map((auction) => (
-            <div key={auction._id} className='p-4 mb-2 border rounded-xl cursor-pointer hover:shadow-lg hover:bg-gray-100 transition' onClick={() => router.push(`/auction-detail/${auction._id}`)}>
+            <div key={auction._id} className='p-4 mb-2 border rounded-xl cursor-pointer hover:shadow-lg hover:bg-gray-100 transition' onClick={() => router.push(`/auction-detail/${roleName}/${userId}/${auction._id}`)}>
               <p><strong>Job Title:</strong> {auction.job_id}</p>
               <p><strong>Price:</strong> {auction.price}₺</p>
             </div>
@@ -44,7 +44,7 @@ const Developer = ({ userId }) => {
         <h2 className='text-2xl font-bold mb-4'>My project processes</h2>
         {myPeriods.length > 0 ? (
           myPeriods.map((period) => (
-            <div key={period._id} className='p-4 mb-2 border rounded-xl cursor-pointer hover:shadow-lg hover:bg-gray-100 transition' onClick={() => router.push(`/period-detail/${period._id}`)}>
+            <div key={period._id} className='p-4 mb-2 border rounded-xl cursor-pointer hover:shadow-lg hover:bg-gray-100 transition' onClick={() => router.push(`/period-detail/${roleName}/${userId}/${period._id}`)}>
               <p><strong>Job Title:</strong> {period.job_id}</p>
               <p className="break-words"><strong>Contract:</strong> {period.contract}</p>
               <p><strong>Price:</strong> {period.price}</p>
@@ -62,7 +62,7 @@ const Developer = ({ userId }) => {
         <h2 className='text-2xl font-bold mb-4'>The jobs I got</h2>
         {myJobsFromAgreements.length > 0 ? (
           myJobsFromAgreements.map((job) => (
-            <div key={job._id} className='p-4 mb-2 border rounded-xl cursor-pointer hover:shadow-lg hover:bg-gray-100 transition' onClick={() => router.push(`/job-detail/${job._id}`)}>
+            <div key={job._id} className='p-4 mb-2 border rounded-xl cursor-pointer hover:shadow-lg hover:bg-gray-100 transition' onClick={() => router.push(`/job-detail/${roleName}/${userId}/${job._id}`)}>
               <p><strong>Title:</strong> {job.title}</p>
               <p><strong>Short Description:</strong> {job.short_description}</p>
               <p><strong>Long Description:</strong> {job.long_description}</p>
