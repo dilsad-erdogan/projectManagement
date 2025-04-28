@@ -14,7 +14,7 @@ const Sidebar = ({ roleName, userId }) => {
     };
 
     return (
-        <div className="flex flex-col gap-10 justify-center items-start mt-20">
+        <div className="flex flex-col gap-10">
             <div className="flex items-center gap-5" onClick={() => router.push(`/profile/${roleName}/${userId}`)}>
                 <FaUserAlt className="text-2xl font-bold" />
                 <div className="text-2xl">Profile</div>
