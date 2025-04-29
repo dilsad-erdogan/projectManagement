@@ -8,6 +8,15 @@ const Developer = ({ roleName, userId }) => {
   // Auctions
   const auctions = useSelector(state => state.auction.auctions);
   const myAuctions = auctions.filter(auction => auction.developer_id === userId);
+  const uniqueAuctions = Object.values(
+    myAuctions.reduce((acc, auction) => {
+      const jobId = auction.job_id;
+      if (!acc[jobId] || auction.price < acc[jobId].price) {
+        acc[jobId] = auction;
+      }
+      return acc;
+    }, {})
+  );
 
   // Period
   const periods = useSelector(state => state.period.periods);
@@ -27,8 +36,8 @@ const Developer = ({ roleName, userId }) => {
       {/* Auctions section */}
       <div className='p-5 border rounded-2xl text-start'>
         <h2 className='text-2xl font-bold mb-4'>Auctions I attended</h2>
-        {myAuctions.length > 0 ? (
-          myAuctions.map((auction) => (
+        {uniqueAuctions.length > 0 ? (
+          uniqueAuctions.map((auction) => (
             <div key={auction._id} className='p-4 mb-2 border rounded-xl cursor-pointer hover:shadow-lg hover:bg-gray-100 transition' onClick={() => router.push(`/auction-detail/${roleName}/${userId}/${auction._id}`)}>
               <p><strong>Job Title:</strong> {auction.job_id}</p>
               <p><strong>Price:</strong> {auction.price}₺</p>
