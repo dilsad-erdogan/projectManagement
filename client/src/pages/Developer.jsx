@@ -56,15 +56,18 @@ const Developer = ({ roleName, userId }) => {
       <div className='p-5 border rounded-2xl text-start'>
         <h2 className='text-2xl font-bold mb-4'>My project processes</h2>
         {myPeriods.length > 0 ? (
-          myPeriods.map((period) => (
-            <div key={period._id} className='p-4 mb-2 border rounded-xl cursor-pointer hover:shadow-lg hover:bg-gray-100 transition' onClick={() => router.push(`/period-detail/${roleName}/${userId}/${period._id}`)}>
-              <p><strong>Job Title:</strong> {period.job_id}</p>
-              <p className="break-words"><strong>Contract:</strong> {period.contract}</p>
-              <p><strong>Price:</strong> {period.price}</p>
-              <p><strong>Revised State:</strong> {period.revised_state ? (<span>True</span>) : (<span>False</span>)}</p>
-              <p className="break-words"><strong>Revised:</strong> {period.revised}</p>
-            </div>
-          ))
+          myPeriods.map((period) => {
+            const job = jobs.find(j => j._id === period.job_id);
+
+            return (
+              <div key={period._id} className='p-4 mb-2 border rounded-xl cursor-pointer hover:shadow-lg hover:bg-gray-100 transition' onClick={() => router.push(`/period-detail/${roleName}/${userId}/${period._id}`)}>
+                <p><strong>Job Title:</strong> {job ? job.title : 'Unknown Job'}</p>
+                <p><strong>Price:</strong> {period.price}</p>
+                <p><strong>Revised State:</strong> {period.revised_state ? (<span>True</span>) : (<span>False</span>)}</p>
+                <p><strong>Starting State:</strong> {job.starting_state ? (<span>True</span>) : (<span>False</span>)}</p>
+              </div>
+            );            
+          })
         ) : (
           <p>No project processes available.</p>
         )}
