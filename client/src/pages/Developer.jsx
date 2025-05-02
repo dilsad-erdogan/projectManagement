@@ -37,12 +37,16 @@ const Developer = ({ roleName, userId }) => {
       <div className='p-5 border rounded-2xl text-start'>
         <h2 className='text-2xl font-bold mb-4'>Auctions I attended</h2>
         {uniqueAuctions.length > 0 ? (
-          uniqueAuctions.map((auction) => (
-            <div key={auction._id} className='p-4 mb-2 border rounded-xl cursor-pointer hover:shadow-lg hover:bg-gray-100 transition' onClick={() => router.push(`/auction-detail/${roleName}/${userId}/${auction._id}`)}>
-              <p><strong>Job Title:</strong> {auction.job_id}</p>
-              <p><strong>Price:</strong> {auction.price}₺</p>
-            </div>
-          ))
+          uniqueAuctions.map((auction) => {
+            const job = jobs.find(j => j._id === auction.job_id);
+
+            return (
+              <div key={auction._id} className='p-4 mb-2 border rounded-xl cursor-pointer hover:shadow-lg hover:bg-gray-100 transition' onClick={() => router.push(`/auction-detail/${roleName}/${userId}/${auction._id}`)}>
+                <p><strong>Job Title:</strong> {job ? job.title : 'Unknown Job'}</p>
+                <p><strong>Price:</strong> {auction.price}₺</p>
+              </div>
+            );
+          })
         ) : (
           <p>No auctions attended yet.</p>
         )}
