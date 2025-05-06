@@ -81,7 +81,6 @@ const Developer = ({ roleName, userId }) => {
             <div key={job._id} className='p-4 mb-2 border rounded-xl cursor-pointer hover:shadow-lg hover:bg-gray-100 transition' onClick={() => router.push(`/job-detail/${roleName}/${userId}/${job._id}`)}>
               <p><strong>Title:</strong> {job.title}</p>
               <p><strong>Short Description:</strong> {job.short_description}</p>
-              <p><strong>Long Description:</strong> {job.long_description}</p>
               <p><strong>Price Range:</strong> {job.min_price}₺ - {job.max_price}₺</p>
               <p><strong>Duration:</strong> {job.duration}</p>
             </div>
