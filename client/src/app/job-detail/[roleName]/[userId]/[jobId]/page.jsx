@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'next/navigation';
 import Sidebar from '@/components/Sidebar';
+import jobServices from '@/services/job';
 
 const page = () => {
   const params = useParams();
@@ -18,6 +19,7 @@ const page = () => {
   const [selectedFileName, setSelectedFileName] = useState("");
   const [uploading, setUploading] = useState(false);
   const [message, setMessage] = useState("");
+  const [completionMsg, setCompletionMsg] = useState("");
 
   const handleReportUpload = async (e) => {
     const file = e.target.files[0];
@@ -51,6 +53,15 @@ const page = () => {
     }
   };
 
+  const handleCompleteJob = async () => {
+    try {
+      await jobServices.updateCompletionState(jobId, { completion_state: true });
+      setCompletionMsg("Job marked as completed.");
+    } catch (err) {
+      setCompletionMsg("Failed to complete the job.");
+    }
+  };
+
   return (
     <div className='flex justify-center items-start gap-10 w-full max-w-[1200px] mt-2'>
       {/* Sidebar */}
@@ -63,7 +74,9 @@ const page = () => {
         <div className="w-5/6 p-5 flex flex-col justify-start overflow-y-auto">
           {job ? (
             <div className="p-5 border rounded-2xl cursor-pointer">
-              <h2 className="text-2xl font-bold mb-4">Job Details</h2>
+              <button onClick={handleCompleteJob} className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Finish the Job</button>
+
+              <h2 className="text-2xl font-bold mb-4 mt-5">Job Details</h2>
               <p><strong>Owner:</strong> {owner ? `${owner.name} ${owner.surname}` : job.customer_id}</p>
               <p><strong>Title:</strong> {job.title}</p>
               <p><strong>Short Description:</strong> {job.short_description}</p>
@@ -73,7 +86,10 @@ const page = () => {
               <p><strong>Starting State:</strong> {job.starting_state ? "True" : "False"}</p>
               <p><strong>Completion State:</strong> {job.completion_state ? "True" : "False"}</p>
               <p><strong>Difficulty State:</strong> {job.difficulty_state ? "True" : "False"}</p>
+
+              {completionMsg && <p className="text-green-600 mt-2">{completionMsg}</p>}
               {selectedFileName && <p className="mt-1 text-sm text-gray-600">Selected file: {selectedFileName}</p>}
+              
               {job.reports && job.reports.length > 0 && (
                 <div className="mt-4">
                   <h3 className="font-bold">Uploaded Reports:</h3>
