@@ -117,4 +117,28 @@ async function updateCompletionState (req, res) {
     }
 };
 
-module.exports = { setJob, getJob, getJobById, deleteJob, updateStartingState, updateCompletionState }
+async function uploadReport(req, res) {
+  try {
+    const jobId = req.params.id;
+    const job = await Job.findById(jobId);
+    if (!job) return res.status(404).json({ success: false, message: "Job not found!" });
+
+    const file = req.file;
+    if (!file) return res.status(400).json({ success: false, message: "PDF is required!" });
+
+    const report = {
+      pdf_url: `/uploads/reports/${file.filename}`,
+      date: new Date()
+    };
+
+    job.reports.push(report);
+    await job.save();
+
+    res.status(200).json({ success: true, message: "Report uploaded successfully.", data: report });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+module.exports = { setJob, getJob, getJobById, deleteJob, updateStartingState, updateCompletionState, uploadReport }
