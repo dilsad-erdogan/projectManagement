@@ -1,5 +1,6 @@
 const express = require('express');
 const dotenv = require('dotenv');
+const path = require("path");
 dotenv.config();
 
 const app = express();
@@ -24,6 +25,7 @@ app.use('/job', require('./routes/job'));
 app.use('/period', require('./routes/period'));
 app.use('/role', require('./routes/role'));
 app.use('/user', require('./routes/user'));
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.get('/', (req, res) => {
     res.setHeader("Access-Control-Allow-Credentials", "true");
