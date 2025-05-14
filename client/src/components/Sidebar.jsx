@@ -1,16 +1,20 @@
+"use client";
+
 import React from 'react';
 import { MdDeveloperMode  } from "react-icons/md";
 import { FaUserAlt } from "react-icons/fa";
 import { FiLogOut } from "react-icons/fi";
 import { useRouter } from 'next/navigation';
 import { logout } from "@/redux/userSlice";
+import { useDispatch } from 'react-redux';
 
 const Sidebar = ({ roleName, userId }) => {
     const router = useRouter();
+    const dispatch = useDispatch();
 
     const handleLogout = async () => {
-        await logout();
-        router.push('/');
+        dispatch(logout());
+        window.location.href = '/';
     };
 
     return (
