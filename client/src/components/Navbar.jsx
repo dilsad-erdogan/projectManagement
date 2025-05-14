@@ -100,7 +100,7 @@ const Navbar = () => {
 
       {/* Login Modal */}
       {isLoginModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center">
+        <div className="fixed inset-0 flex items-center justify-center z-50">
           <div className="bg-white p-8 rounded-lg shadow-lg max-w-sm w-full">
             <h2 className="text-2xl mb-4 font-bold">Login</h2>
             <input type="text" name="email" placeholder="Email" className="w-full border p-2 mb-4 rounded" onChange={handleChange} />
@@ -119,7 +119,7 @@ const Navbar = () => {
 
       {/* Register Modal */}
       {isRegisterModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center">
+        <div className="fixed inset-0 flex items-center justify-center z-50">
           <div className="bg-white p-8 rounded-lg shadow-lg max-w-sm w-full">
             <h2 className="text-2xl mb-4 font-bold">Register</h2>
             <select name="roleId" className="w-full border p-2 mb-4 rounded" onChange={handleChange}>

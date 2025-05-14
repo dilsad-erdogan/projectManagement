@@ -20,7 +20,7 @@ const Page = () => {
       {/* Content */}
       <div className='flex justify-center items-start w-full max-w-[1200px]'>
         <div className="w-5/6 p-5 flex flex-col justify-start overflow-y-auto">
-          {roleName === "customer" ? (<Customer roleName={roleName} userId={userId} />) : (<Developer roleName={roleName} userId={userId} />)}
+          {roleName === "Customer" ? (<Customer roleName={roleName} userId={userId} />) : (<Developer roleName={roleName} userId={userId} />)}
         </div>
       </div>
     </div>
