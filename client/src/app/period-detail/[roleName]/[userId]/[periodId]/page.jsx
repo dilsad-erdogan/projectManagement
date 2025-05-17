@@ -23,7 +23,6 @@ const page = () => {
     try {
       await periodServices.updateRevised(period._id, { revised: editedRevised });
       setIsEditing(false);
-      // burada istersen Redux state'ini yeniden çekebilirsin
     } catch (err) {
       console.error('Revision update error:', err);
     }
@@ -31,16 +30,9 @@ const page = () => {
 
   const handleApproveRevised = async () => {
     try {
-      // 1. Revize mesajı contract'a taşınır
       await periodServices.updateContract(period._id, { contract: period.revised });
-
-      // 2. revised alanı temizlenir
       await periodServices.updateRevised(period._id, { revised: "" });
-
-      // 3. revised_state false yapılır
       await periodServices.updateRevisedState(period._id, { revised_state: false });
-
-      // burada da istersen Redux güncelleyebilirsin
     } catch (err) {
       console.error('Approve revision error:', err);
     }
