@@ -16,6 +16,20 @@ const Page = () => {
     const [period, setPeriod] = useState(null);
     const [message, setMessage] = useState("");
 
+    // Users fetch
+    useEffect(() => {
+        const fetchUsers = async () => {
+            try {
+                const allUsers = await userServices.get();
+                setUsers(allUsers.data);
+            } catch (error) {
+                console.error("Failed to fetch users:", error);
+            }
+        };
+
+        fetchUsers();
+    }, []);
+
     useEffect(() => {
         const fetchJob = async () => {
             try {
@@ -29,25 +43,23 @@ const Page = () => {
         if (jobId) fetchJob();
     }, [jobId]);
 
-    // Auction ve User çek
+    // Auction fetch
     useEffect(() => {
-        const fetchAuctionsAndUsers = async () => {
+        const fetchAuctions = async () => {
             try {
                 const allAuctions = await auctionServices.get();
-                const allUsers = await userServices.get();
 
                 const relatedAuctions = allAuctions.data.filter(a => a.job_id === jobId);
                 const sortedAuctions = relatedAuctions.sort((a, b) => a.price - b.price);
 
                 setAuctions(sortedAuctions);
-                setUsers(allUsers.data);
             } catch (error) {
-                console.error("Failed to fetch auctions or users:", error);
+                console.error("Failed to fetch auctions:", error);
             }
         };
 
         if (job && !job.starting_state) {
-            fetchAuctionsAndUsers();
+            fetchAuctions();
         }
     }, [job, jobId]);
 
@@ -138,8 +150,12 @@ const Page = () => {
                             <h2 className="text-xl font-semibold mb-2">Period Information</h2>
                             <p>Developer: {getDeveloperName(period.developer_id)}</p>
                             <p>Price: {period.price}₺</p>
-                            <p>Contract: <a href={`http://localhost:3030/uploads/${period.contract}`} className="text-blue-600 underline" target="_blank">Download</a></p>
-                            <p>Revised Status: {period.revised_state ? "Yes" : "No"}</p>
+                            {period.contract && (
+                                <p>Contract: <a href={`http://localhost:3030/uploads/${period.contract}`} className="text-blue-600 underline" target="_blank">Download</a></p>
+                            )}
+                            {period.revised_state && (
+                                <p>Revised Status: {period.revised_state ? "Yes" : "No"}</p>
+                            )}
                             {period.revised_state && (
                                 <div className="mt-2">
                                     <p>Revised Document: <a href={`http://localhost:3030/uploads/${period.revised}`} className="text-blue-600 underline" target="_blank">Download</a></p>
