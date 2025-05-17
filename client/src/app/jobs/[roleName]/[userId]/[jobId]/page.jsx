@@ -6,12 +6,14 @@ import jobServices from "@/services/job";
 import auctionServices from "@/services/auction";
 import userServices from "@/services/user";
 import Sidebar from '@/components/Sidebar';
+import periodServices from '@/services/period';
 
 const Page = () => {
     const { roleName, userId, jobId } = useParams();
     const [job, setJob] = useState(null);
     const [auctions, setAuctions] = useState([]);
     const [users, setUsers] = useState([]);
+    const [period, setPeriod] = useState(null);
     const [message, setMessage] = useState("");
 
     useEffect(() => {
@@ -49,10 +51,24 @@ const Page = () => {
         }
     }, [job, jobId]);
 
-    const handleSelectAuction = async (auctionId) => {
+    const handleSelectAuction = async (auctionId, developerId, price) => {
         try {
             await auctionServices.updateApproval(auctionId, { approval_state: true });
+            await auctionServices.deleted(auctionId);
             await jobServices.updateStartingState(jobId, { starting_state: true });
+
+            const periodData = {
+                job_id: jobId,
+                developer_id: developerId,
+                price,
+                contract: "",
+                revised: "",
+                revised_state: false,
+                approval_state: false
+            };
+            
+            await periodServices.add(periodData);
+
             setMessage("The auction was successfully approved and the work was started.");
         } catch (error) {
             console.error("The auction could not be confirmed.:", error);
@@ -64,6 +80,20 @@ const Page = () => {
         const developer = users.find(user => user._id === developerId);
         return developer ? `${developer.name} ${developer.surname}` : developerId;
     };
+
+    useEffect(() => {
+        const fetchPeriod = async () => {
+            try {
+                const allPeriods = await periodServices.get();
+                const relatedPeriod = allPeriods.data.find(p => p.job_id === jobId);
+                setPeriod(relatedPeriod);
+            } catch (error) {
+                console.error("Failed to fetch period:", error);
+            }
+        };
+
+        fetchPeriod();
+    }, [jobId]);
 
     if (!job) return <p className="p-4">Loading...</p>;
 
@@ -96,10 +126,38 @@ const Page = () => {
                                             <p className="text-sm text-gray-700">Developer ID: {getDeveloperName(auction.developer_id)}</p>
                                             <p className="text-sm text-gray-700">Price: {auction.price}₺</p>
                                         </div>
-                                        <button onClick={() => handleSelectAuction(auction._id)} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">Seç</button>
+                                        <button onClick={() => handleSelectAuction(auction._id, auction.developer_id, auction.price)} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">Seç</button>
                                     </li>
                                 ))}
                             </ul>
+                        </div>
+                    )}
+
+                    {period && (
+                        <div className="mt-6 p-4 border rounded bg-gray-100">
+                            <h2 className="text-xl font-semibold mb-2">Period Information</h2>
+                            <p>Developer: {getDeveloperName(period.developer_id)}</p>
+                            <p>Price: {period.price}₺</p>
+                            <p>Contract: <a href={`http://localhost:3030/uploads/${period.contract}`} className="text-blue-600 underline" target="_blank">Download</a></p>
+                            <p>Revised Status: {period.revised_state ? "Yes" : "No"}</p>
+                            {period.revised_state && (
+                                <div className="mt-2">
+                                    <p>Revised Document: <a href={`http://localhost:3030/uploads/${period.revised}`} className="text-blue-600 underline" target="_blank">Download</a></p>
+                                    <button
+                                        onClick={async () => {
+                                            try {
+                                                await periodServices.updateApproval(period._id, { approval_state: true });
+                                                setMessage("The revision was approved and the process was completed.");
+                                            } catch (e) {
+                                                console.error("Revision not approved:", e);
+                                            }
+                                        }}
+                                        className="mt-2 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+                                    >
+                                        Confirm Revision and Finish Period
+                                    </button>
+                                </div>
+                            )}
                         </div>
                     )}
 
