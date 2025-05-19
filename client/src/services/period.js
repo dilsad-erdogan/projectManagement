@@ -51,13 +51,14 @@ const updateContract = async (id, data) => {
     }
 };
 
-const updateRevised = async (id, formData) => {
-    const res = await axios.put(`${PERIOD}/updateRevised/${id}`, formData, {
-        headers: {
-            "Content-Type": "multipart/form-data"
-        }
-    });
-    return res.data;
+const updateRevised = async (id, data) => {
+    try{
+        const response = await axios.put(`${PERIOD}/updateRevised/${id}`, data);
+        return response.data;
+    } catch (error){
+        console.error('Error updating period:', error);
+        throw error;
+    }
 };
 
 const updateRevisedState = async (id, data) => {

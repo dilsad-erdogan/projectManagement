@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from "next/navigation";
 import jobServices from "@/services/job";
 import auctionServices from "@/services/auction";
@@ -15,6 +15,7 @@ const Page = () => {
     const [users, setUsers] = useState([]);
     const [period, setPeriod] = useState(null);
     const [message, setMessage] = useState("");
+    const [editedRevised, setEditedRevised] = useState(period?.revised || "");
 
     // Users fetch
     useEffect(() => {
@@ -107,6 +108,17 @@ const Page = () => {
         fetchPeriod();
     }, [jobId]);
 
+    const handleUpdateRevised = async () => {
+        try {
+            await periodServices.updateRevised(period._id, { revised: editedRevised });
+            await periodServices.updateRevisedState(period._id, { revised_state: true });
+            setMessage("The revision was approved.");
+        } catch (err) {
+            console.error('Revision update error:', err);
+            setMessage('Revision update error:', err);
+        }
+    };
+
     if (!job) return <p className="p-4">Loading...</p>;
 
     return (
@@ -150,6 +162,13 @@ const Page = () => {
                             <h2 className="text-xl font-semibold mb-2">Period Information</h2>
                             <p>Developer: {getDeveloperName(period.developer_id)}</p>
                             <p>Price: {period.price}₺</p>
+                            {period && !period.revised_state && (
+                                <div className="mt-4">
+                                    <h3 className="font-semibold mb-2">Upload Contract</h3>
+                                    <textarea className="w-full h-32 p-2 border rounded" value={editedRevised} onChange={(e) => setEditedRevised(e.target.value)} />
+                                    <button className="px-4 py-2 bg-blue-500 text-white rounded" onClick={handleUpdateRevised}>Save Revision</button>
+                                </div>
+                            )}
                             {period.contract && (
                                 <p>Contract: <a href={`http://localhost:3030/uploads/${period.contract}`} className="text-blue-600 underline" target="_blank">Download</a></p>
                             )}
@@ -162,7 +181,9 @@ const Page = () => {
                                     <button
                                         onClick={async () => {
                                             try {
-                                                await periodServices.updateApproval(period._id, { approval_state: true });
+                                                await periodServices.updateContract(period._id, { contract: period.revised });
+                                                await periodServices.updateApprovalState(period._id, { approval_state: true });
+                                                await periodServices.deleted(period._id);
                                                 setMessage("The revision was approved and the process was completed.");
                                             } catch (e) {
                                                 console.error("Revision not approved:", e);
